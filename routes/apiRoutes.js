@@ -47,4 +47,38 @@ module.exports = function (app) {
 
 
     })
+    app.delete("/api/notes/:id", function (req, res) {
+        const id = req.params.id;
+
+        fs.readFile("./db/db.json", (err, data) => {
+            if (err) console.log(err);
+
+            const dbArray = JSON.parse(data);
+
+            //.filter() filter dbArray, and remove any note that has the id to be deleted
+            const notesLeft = dbArray.filter(note => {
+                console.log(note.id)
+                console.log(+id)
+                console.log(note.id !== +id)
+                return note.id !== +id
+            });
+            // same as pareIn
+
+
+
+            console.log(notesLeft)
+
+            //convert new array to string to push it to db.js
+            const notesLeftDB = JSON.stringify(notesLeft);
+            //save new array to db.js
+            fs.readFile("./db/db.json", (err, data) => {
+                if (err) throw err;
+                fs.writeFile("./db/db.json", notesLeftDB, (err, data) => {
+                    if (err) throw err;
+                })
+                return res.json(JSON.parse(data));
+            });
+        })
+
+    })
 }
