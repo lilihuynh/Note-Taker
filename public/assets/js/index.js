@@ -48,3 +48,17 @@ const renderActiveNote = () => {
       $noteText.val("");
     }
   };
+
+  // Get the note data from the inputs, save it to the db and update the view
+const handleNoteSave = function () {
+    const newNote = {
+      title: $noteTitle.val(),
+      text: $noteText.val(),
+    };
+  
+    saveNote(newNote).then(() => {
+      getAndRenderNotes();
+      renderActiveNote();
+    });
+  };
+  
